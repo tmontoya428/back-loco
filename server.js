@@ -15,7 +15,13 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+// Configuración de CORS
+const allowedOrigins = ['https://front-loco.vercel.app'];
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true // permite el envío de cookies de autenticación
+}));
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -24,7 +30,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Configuración de rutas
 app.use('/api/register', registerUserRoutes);
-app.use('/api/login', loginRoutes); // Asegúrate de que esta línea esté presente
+app.use('/api/login', loginRoutes);
 app.use('/api/register-code', registerCodeRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/winners', winnersRoutes);
