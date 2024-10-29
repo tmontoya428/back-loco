@@ -15,13 +15,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
-// Configuración de CORS
-const allowedOrigins = ['https://front-loco.vercel.app'];
-app.use(cors({
-    origin: allowedOrigins,
-    credentials: true // permite el envío de cookies de autenticación
-}));
+app.use(cors());
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGODB_URI)
@@ -30,13 +24,16 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Configuración de rutas
 app.use('/api/register', registerUserRoutes);
-app.use('/api/login', loginRoutes);
+app.use('/api/login', loginRoutes); // Asegúrate de que esta línea esté presente
 app.use('/api/register-code', registerCodeRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/winners', winnersRoutes);
 app.use('/api/admin', adminRegistrationRoutes);
 
 // Manejador de rutas no encontradas (404)
+app.get('/', async(req, res) => {
+    res.send('back loco en vivo' );
+});
 app.use((req, res, next) => {
     res.status(404).json({ msg: 'Ruta no encontrada' });
 });
