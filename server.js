@@ -22,17 +22,20 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
+// Ruta para favicon.ico para devolver una respuesta vacía y evitar errores 500
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Configuración de rutas
 app.use('/api/register', registerUserRoutes);
-app.use('/api/login', loginRoutes); // Asegúrate de que esta línea esté presente
+app.use('/api/login', loginRoutes);
 app.use('/api/register-code', registerCodeRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/winners', winnersRoutes);
 app.use('/api/admin', adminRegistrationRoutes);
 
 // Manejador de rutas no encontradas (404)
-app.get('/', async(req, res) => {
-    res.send('back loco en vivo' );
+app.get('/', async (req, res) => {
+    res.send('back loco en vivo');
 });
 app.use((req, res, next) => {
     res.status(404).json({ msg: 'Ruta no encontrada' });
